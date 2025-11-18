@@ -2,28 +2,189 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>年齡計算器</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 40px;
+      max-width: 500px;
+      width: 100%;
+      animation: slideIn 0.5s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #333;
+      text-align: center;
+      margin-bottom: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 30px;
+    }
+
+    .type-selector {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .type-selector label {
+      cursor: pointer;
+      padding: 12px 30px;
+      border-radius: 30px;
+      border: 2px solid #e0e0e0;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      background: #f8f9fa;
+    }
+
+    .type-selector label:hover {
+      border-color: #667eea;
+      background: #f0f2ff;
+    }
+
+    .type-selector input[type="radio"] {
+      display: none;
+    }
+
+    .type-selector input[type="radio"]:checked + span {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-color: #667eea;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .type-selector label span {
+      display: inline-block;
+      padding: 12px 30px;
+      border-radius: 30px;
+      border: 2px solid #e0e0e0;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      background: #f8f9fa;
+    }
+
+    .input-group {
+      margin-bottom: 25px;
+    }
+
+    input[type="date"] {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #f8f9fa;
+    }
+
+    input[type="date"]:focus {
+      outline: none;
+      border-color: #667eea;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    #display {
+      margin-top: 25px;
+      padding: 20px;
+      background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+      border-radius: 10px;
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #2d3436;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(253, 203, 110, 0.3);
+    }
+  </style>
 </head>
 <body>
-  <h1>🎂 年齡計算器（localStorage 範例）</h1>
+  <div class="card">
+    <h1 id="title">🎂年齡計算器</h1>
+    <p class="subtitle">請選擇類型和生日，計算年齡</p>
 
-  <p>請選擇類型和生日，按下「計算」來計算年齡：</p>
+    <div class="type-selector">
+      <label>
+        <input type="radio" name="ageType" value="human" checked>
+        <span>👤 人</span>
+      </label>
+      <label>
+        <input type="radio" name="ageType" value="dog">
+        <span>🐶 小狗</span>
+      </label>
+    </div>
 
-  <div style="margin-bottom: 10px;">
-    <label>
-      <input type="radio" name="ageType" value="human" checked>
-      人
-    </label>
-    <label style="margin-left: 20px;">
-      <input type="radio" name="ageType" value="dog">
-      小狗
-    </label>
+    <div class="input-group">
+      <input id="note-input" type="date">
+    </div>
+
+    <button id="save-btn">🎯 計算年齡</button>
+
+    <p id="display">目前還沒有儲存任何日期。</p>
   </div>
-
-  <input id="note-input" type="date" style="width: 280px;">
-  <button id="save-btn">計算</button>
-
-  <p id="display">目前還沒有儲存任何日期。</p>
 
   <script>
     const KEY_DATE = 'birthdate';
@@ -32,6 +193,23 @@
     const saveBtn = document.getElementById('save-btn');
     const display = document.getElementById('display');
     const radioButtons = document.querySelectorAll('input[name="ageType"]');
+    const title = document.getElementById('title');
+
+    // 更新標題的函數
+    function updateTitle(type) {
+      if (type === 'human') {
+        title.textContent = '🏋️‍♂️ 人類年齡計算器';
+      } else {
+        title.textContent = '🐕 小狗年齡計算器';
+      }
+    }
+
+    // 監聽 radio button 變化
+    radioButtons.forEach(radio => {
+      radio.addEventListener('change', function() {
+        updateTitle(this.value);
+      });
+    });
 
     // 計算年齡的函數
     function calculateAge(birthDate, type) {
@@ -56,6 +234,9 @@
     // 第一次進來頁面時，先試著把舊資料拿出來
     const savedDate = localStorage.getItem(KEY_DATE);
     const savedType = localStorage.getItem(KEY_TYPE) || 'human';
+    
+    // 更新標題
+    updateTitle(savedType);
     
     if (savedDate) {
       input.value = savedDate;
