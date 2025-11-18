@@ -7,7 +7,18 @@
 <body>
   <h1>🎂 年齡計算器（localStorage 範例）</h1>
 
-  <p>請選擇您的生日，按下「儲存」計算今年的年齡：</p>
+  <p>請選擇類型和生日，按下「計算」來計算年齡：</p>
+
+  <div style="margin-bottom: 10px;">
+    <label>
+      <input type="radio" name="ageType" value="human" checked>
+      人
+    </label>
+    <label style="margin-left: 20px;">
+      <input type="radio" name="ageType" value="dog">
+      小狗
+    </label>
+  </div>
 
   <input id="note-input" type="date" style="width: 280px;">
   <button id="save-btn">計算</button>
@@ -15,13 +26,15 @@
   <p id="display">目前還沒有儲存任何日期。</p>
 
   <script>
-    const KEY = 'birthdate';
+    const KEY_DATE = 'birthdate';
+    const KEY_TYPE = 'ageType';
     const input = document.getElementById('note-input');
     const saveBtn = document.getElementById('save-btn');
     const display = document.getElementById('display');
+    const radioButtons = document.querySelectorAll('input[name="ageType"]');
 
     // 計算年齡的函數
-    function calculateAge(birthDate) {
+    function calculateAge(birthDate, type) {
       const today = new Date();
       const birth = new Date(birthDate);
       let age = today.getFullYear() - birth.getFullYear();
@@ -32,24 +45,44 @@
         age--;
       }
       
+      // 如果是小狗，乘以 7
+      if (type === 'dog') {
+        age = age * 7;
+      }
+      
       return age;
     }
 
     // 第一次進來頁面時，先試著把舊資料拿出來
-    const saved = localStorage.getItem(KEY);
-    if (saved) {
-      input.value = saved;
-      const age = calculateAge(saved);
-      display.textContent = `您的生日：${saved}，今年年齡：${age} 歲`;
+    const savedDate = localStorage.getItem(KEY_DATE);
+    const savedType = localStorage.getItem(KEY_TYPE) || 'human';
+    
+    if (savedDate) {
+      input.value = savedDate;
+      // 設定 radio button
+      radioButtons.forEach(radio => {
+        if (radio.value === savedType) {
+          radio.checked = true;
+        }
+      });
+      
+      const age = calculateAge(savedDate, savedType);
+      const typeName = savedType === 'human' ? '人' : '小狗';
+      display.textContent = `${typeName}的生日：${savedDate}，今年年齡：${age} 歲`;
     }
 
-    // 按下儲存，就把日期存進 localStorage 並計算年齡
+    // 按下計算，就把日期和類型存進 localStorage 並計算年齡
     saveBtn.addEventListener('click', function () {
       const birthDate = input.value;
+      const selectedType = document.querySelector('input[name="ageType"]:checked').value;
+      
       if (birthDate) {
-        localStorage.setItem(KEY, birthDate);
-        const age = calculateAge(birthDate);
-        display.textContent = `您的生日：${birthDate}，今年年齡：${age} 歲`;
+        localStorage.setItem(KEY_DATE, birthDate);
+        localStorage.setItem(KEY_TYPE, selectedType);
+        
+        const age = calculateAge(birthDate, selectedType);
+        const typeName = selectedType === 'human' ? '人' : '小狗';
+        display.textContent = `${typeName}的生日：${birthDate}，今年年齡：${age} 歲`;
       } else {
         display.textContent = '請先選擇日期！';
       }
