@@ -2,38 +2,57 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>localStorage 簡單範例</title>
+  <title>年齡計算器</title>
 </head>
 <body>
-  <h1>📝 小小記事本（localStorage 範例）</h1>
+  <h1>🎂 年齡計算器（localStorage 範例）</h1>
 
-  <p>請輸入一些文字，按下「儲存」，再試試看重新整理頁面：</p>
+  <p>請選擇您的生日，按下「儲存」計算今年的年齡：</p>
 
-  <input id="note-input" type="text" placeholder="想記住的文字" style="width: 280px;">
-  <button id="save-btn">儲存</button>
+  <input id="note-input" type="date" style="width: 280px;">
+  <button id="save-btn">計算</button>
 
-  <p id="display">目前還沒有儲存任何文字。</p>
+  <p id="display">目前還沒有儲存任何日期。</p>
 
   <script>
-    const KEY = 'my-note';
+    const KEY = 'birthdate';
     const input = document.getElementById('note-input');
     const saveBtn = document.getElementById('save-btn');
     const display = document.getElementById('display');
+
+    // 計算年齡的函數
+    function calculateAge(birthDate) {
+      const today = new Date();
+      const birth = new Date(birthDate);
+      let age = today.getFullYear() - birth.getFullYear();
+      const monthDiff = today.getMonth() - birth.getMonth();
+      
+      // 如果今年生日還沒到，年齡減 1
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+        age--;
+      }
+      
+      return age;
+    }
 
     // 第一次進來頁面時，先試著把舊資料拿出來
     const saved = localStorage.getItem(KEY);
     if (saved) {
       input.value = saved;
-      display.textContent = '目前儲存的文字：' + saved;
+      const age = calculateAge(saved);
+      display.textContent = `您的生日：${saved}，今年年齡：${age} 歲`;
     }
 
-    // 按下儲存，就把文字存進 localStorage
+    // 按下儲存，就把日期存進 localStorage 並計算年齡
     saveBtn.addEventListener('click', function () {
-      const text = input.value;
-      localStorage.setItem(KEY, text);
-      display.textContent = text
-        ? '目前儲存的文字：' + text
-        : '目前還沒有儲存任何文字。';
+      const birthDate = input.value;
+      if (birthDate) {
+        localStorage.setItem(KEY, birthDate);
+        const age = calculateAge(birthDate);
+        display.textContent = `您的生日：${birthDate}，今年年齡：${age} 歲`;
+      } else {
+        display.textContent = '請先選擇日期！';
+      }
     });
   </script>
 </body>
