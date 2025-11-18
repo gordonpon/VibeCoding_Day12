@@ -159,6 +159,107 @@
       justify-content: center;
       box-shadow: 0 4px 15px rgba(253, 203, 110, 0.3);
     }
+
+    /* 手機 RWD 支援 */
+    @media (max-width: 768px) {
+      body {
+        padding: 15px;
+      }
+
+      .card {
+        padding: 30px 20px;
+        border-radius: 15px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+        margin-bottom: 8px;
+      }
+
+      .subtitle {
+        font-size: 0.85rem;
+        margin-bottom: 25px;
+      }
+
+      .type-selector {
+        gap: 15px;
+        margin-bottom: 25px;
+      }
+
+      .type-selector label span {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+      }
+
+      input[type="date"] {
+        padding: 12px;
+        font-size: 0.95rem;
+      }
+
+      button {
+        padding: 13px;
+        font-size: 1rem;
+      }
+
+      #display {
+        padding: 18px;
+        font-size: 1rem;
+        min-height: 55px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+
+      .card {
+        padding: 25px 15px;
+        border-radius: 12px;
+      }
+
+      h1 {
+        font-size: 1.3rem;
+      }
+
+      .subtitle {
+        font-size: 0.8rem;
+        margin-bottom: 20px;
+      }
+
+      .type-selector {
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .type-selector label {
+        width: 100%;
+      }
+
+      .type-selector label span {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        font-size: 0.95rem;
+      }
+
+      input[type="date"] {
+        padding: 12px;
+        font-size: 0.9rem;
+      }
+
+      button {
+        padding: 12px;
+        font-size: 0.95rem;
+      }
+
+      #display {
+        padding: 15px;
+        font-size: 0.95rem;
+        min-height: 50px;
+      }
+    }
   </style>
 </head>
 <body>
